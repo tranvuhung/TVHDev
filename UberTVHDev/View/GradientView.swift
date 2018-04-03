@@ -8,8 +8,23 @@
 
 import UIKit
 
-class GradientView {
+class GradientView: UIView {
   static let sharedGradientsView = GradientView()
+  
+  let gradient = CAGradientLayer()
+  
+  override func awakeFromNib() {
+    setupGradient()
+  }
+  
+  func setupGradient(){
+    gradient.frame = self.bounds
+    gradient.colors = [UIColor(red: 255/255, green: 128/255, blue: 0, alpha: 1).cgColor, UIColor.init(red: 255/255, green: 128/255, blue: 0, alpha: 0).cgColor]
+    gradient.startPoint = CGPoint.zero
+    gradient.endPoint = CGPoint(x: 0, y: 1)
+    gradient.locations = [0.85, 1.0]
+    self.layer.addSublayer(gradient)
+  }
   
   var menuGradientView: CAGradientLayer = {
     let gradient = CAGradientLayer()

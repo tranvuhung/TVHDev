@@ -37,7 +37,7 @@ class SetupViewConstraints {
   let menuTitle: UILabel = {
     let title = UILabel()
     title.text = "TVHDev"
-    title.font = UIFont.boldSystemFont(ofSize: 18)
+    title.font = UIFont(descriptor: UIFontDescriptor.init(name: "Avenir Next Bold", size: 30), size: 30)
     title.textAlignment = .center
     title.textColor = UIColor.white
     title.translatesAutoresizingMaskIntoConstraints = false
@@ -58,7 +58,7 @@ class SetupViewConstraints {
   let requestRide:  UIButton = {
     var request = UIButton()
     request.setTitle("REQUEST RIDE", for: UIControlState.normal)
-    request.titleLabel?.font = UIFont.boldSystemFont(ofSize: 28)
+    request.titleLabel?.font =  UIFont(descriptor: UIFontDescriptor.init(name: "Avenir Next Heavy", size: 28), size: 28)
     request.backgroundColor = UIColor(red: 255/255, green: 128/255, blue: 0, alpha: 1)
     request.setTitleColor(UIColor.black, for: .normal)
     request.translatesAutoresizingMaskIntoConstraints = false
