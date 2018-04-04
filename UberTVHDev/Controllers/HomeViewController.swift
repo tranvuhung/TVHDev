@@ -81,6 +81,17 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
     UpdateServices.instance.updateUserLocation(withCoordinate: userLocation.coordinate)
     UpdateServices.instance.updateDriverLocation(withCoordinate: userLocation.coordinate)
   }
+  
+  func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+    if let annotation = annotation as? DriverAnnotation{
+      let identifer = "driver"
+      var view: MKAnnotationView
+      view = MKAnnotationView(annotation: annotation, reuseIdentifier: identifer)
+      view.image = UIImage(named: "driverAnnotation")
+      return view
+    }
+    return nil
+  }
 }
 
 extension HomeViewController: CLLocationManagerDelegate{

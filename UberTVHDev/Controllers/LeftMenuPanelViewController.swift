@@ -97,6 +97,10 @@ class LeftMenuPanelViewController: UIViewController {
       let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
       let loginVc = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController
       present(loginVc!, animated: true, completion: nil)
+      appDelegate.MenuContainerVC.toggoleLeftPanel()
+//      if self.presentingViewController == nil {
+//        appDelegate.MenuContainerVC.toggoleLeftPanel()
+//      }
     } else {
       do{
         try Auth.auth().signOut()
