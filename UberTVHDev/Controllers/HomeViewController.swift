@@ -75,6 +75,12 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
   @IBAction func centerUserLocationAction(_ sender: Any) {
     centerMapUserLocation()
   }
+  
+  //MARK: Update location user/driver
+  func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+    UpdateServices.instance.updateUserLocation(withCoordinate: userLocation.coordinate)
+    UpdateServices.instance.updateDriverLocation(withCoordinate: userLocation.coordinate)
+  }
 }
 
 extension HomeViewController: CLLocationManagerDelegate{

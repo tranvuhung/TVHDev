@@ -106,6 +106,7 @@ class LeftMenuPanelViewController: UIViewController {
         pickupModeLabel.text = ""
         pickupModeSwitch.isHidden = true
         loginoutBtn.setTitle("Sign up/ Login", for: .normal)
+        appDelegate.MenuContainerVC.toggoleLeftPanel()
       } catch let error {
         print(error.localizedDescription)
       }
