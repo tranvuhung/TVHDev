@@ -16,6 +16,8 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
   
   @IBOutlet weak var requestRideBtn: RoundedButton!
   @IBOutlet weak var mapView: MKMapView!
+  @IBOutlet weak var centerMapBtn: UIButton!
+  
   var delegate: CenterVCDelegate?
   
   var locationManager: CLLocationManager?
@@ -125,6 +127,7 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
   //MARK: - Center user location
   @IBAction func centerUserLocationAction(_ sender: Any) {
     centerMapUserLocation()
+    centerMapBtn.fadeTo(alpha: 0.0, withDuration: 0.2)
   }
   
   //MARK: Update location user/driver
@@ -151,5 +154,9 @@ extension HomeViewController: CLLocationManagerDelegate{
       mapView.showsUserLocation = true
       mapView.userTrackingMode = .follow
     }
+  }
+  
+  func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+    centerMapBtn.fadeTo(alpha: 1.0, withDuration: 0.2)
   }
 }
