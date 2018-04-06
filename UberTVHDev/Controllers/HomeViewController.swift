@@ -154,6 +154,7 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
     return nil
   }
   
+  //MARK: - Search location map items
   func performSearch(){
     matchingItems.removeAll()
     let request = MKLocalSearchRequest()
@@ -176,6 +177,7 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
   }
 }
 
+//MARK: Location manager delegate
 extension HomeViewController: CLLocationManagerDelegate{
   func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
     if status == .authorizedAlways{
@@ -189,6 +191,7 @@ extension HomeViewController: CLLocationManagerDelegate{
   }
 }
 
+//MARK: TextField Delegate
 extension HomeViewController: UITextFieldDelegate {
   func textFieldDidBeginEditing(_ textField: UITextField) {
     if textField == destinationTexfield {
@@ -258,6 +261,7 @@ extension HomeViewController: UITextFieldDelegate {
   
 }
 
+//MARK: TableView Delegate/Data source
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     return 1
@@ -278,5 +282,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     animateTableView(shouldShow: false)
     print("Selected!")
+  }
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    view.endEditing(true)
+  }
+  
+  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    if destinationTexfield.text?.isEmpty == true {
+      animateTableView(shouldShow: false)
+    }
   }
 }
