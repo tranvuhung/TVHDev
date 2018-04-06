@@ -123,10 +123,14 @@ class SetupLeftSidePanelVC {
   
   func signUpConstraint(_ view: UIView){
     view.addSubview(signUpLoginButton)
-    NSLayoutConstraint.activate([
-      signUpLoginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-      signUpLoginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-      signUpLoginButton.widthAnchor.constraint(equalToConstant: 150)
-      ])
+    if #available(iOS 11.0, *) {
+      NSLayoutConstraint.activate([
+        signUpLoginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+        signUpLoginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+        signUpLoginButton.widthAnchor.constraint(equalToConstant: 150)
+        ])
+    } else {
+      // Fallback on earlier versions
+    }
   }
 }

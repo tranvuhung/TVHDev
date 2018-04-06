@@ -120,8 +120,8 @@ extension ContainerVC: CenterVCDelegate {
       animateCenterPanelXPosition(targetPosition: 0, completion: { (finished) in
         if finished == true {
           self.currentState = .collapsed
-          //self.leftVC.dismiss(animated: true, completion: nil) // code
           self.leftVC = nil // stỏryboad
+          //self.leftVC.dismiss(animated: true, completion: nil) // code
         }
       })
     }

@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import Firebase
 import RevealingSplashView
 
 class HomeViewController: UIViewController, MKMapViewDelegate {
@@ -22,6 +23,7 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
   
   let revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "appicon")!, iconInitialSize: CGSize(width: 80, height: 80), backgroundColor: UIColor.white)
 
+  //MARK: - Life cycle
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = UIColor(red: 255/255, green: 128/255, blue: 0, alpha: 1)
@@ -35,6 +37,10 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
     mapView.delegate = self
     
     centerMapUserLocation()
+    
+    DataService.instance.REF_DRIVERS.observe(.value) { (dataSnapshot) in
+      self.loadDriverLocationFromFB()
+    }
     
     self.view.addSubview(revealingSplashView)
     revealingSplashView.animationType = SplashAnimationType.heartBeat
@@ -59,6 +65,51 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
   func centerMapUserLocation(){
     let coordinateRegion = MKCoordinateRegionMakeWithDistance(mapView.userLocation.coordinate, regionRadius * 2.0, regionRadius * 2.0)
     mapView.setRegion(coordinateRegion, animated: true)
+  }
+  
+  //MARK: - load instance of driver
+  func loadDriverLocationFromFB(){
+    DataService.instance.REF_DRIVERS.observeSingleEvent(of: .value) { (snapshot) in
+      guard let driverSnapshot = snapshot.children.allObjects as? [DataSnapshot] else {return}
+      
+      for driver in driverSnapshot{
+        guard driver.hasChild("coordinate") else {return}
+        
+        guard driver.childSnapshot(forPath: "isPickupModeEnabled").value as? Bool == true else {
+          for annotation in self.mapView.annotations{
+            if annotation.isKind(of: DriverAnnotation.self){
+              if let annotation = annotation as? DriverAnnotation{
+                if annotation.key == driver.key{
+                  self.mapView.removeAnnotation(annotation)
+                }
+              }
+            }
+          }
+          return
+        }
+        guard let driverDic = driver.value as? Dictionary<String, AnyObject> else {return}
+        let coordinateArray = driverDic["coordinate"] as! NSArray
+        let driverCoordinate = CLLocationCoordinate2D(latitude: coordinateArray[0] as! CLLocationDegrees, longitude: coordinateArray[1] as! CLLocationDegrees)
+        let annotation = DriverAnnotation(coordinate: driverCoordinate, withKey: driver.key)
+        
+        var driverIsVisible: Bool{
+          return self.mapView.annotations.contains(where: { (annotation) -> Bool in
+            if let driverAnnotation = annotation as? DriverAnnotation {
+              if driverAnnotation.key == driver.key {
+                driverAnnotation.update(annotationPosition: driverAnnotation, withCoordinate: driverCoordinate)
+                return true
+              }
+            }
+            return false
+          })
+        }
+        
+        if !driverIsVisible{
+          self.mapView.addAnnotation(annotation)
+        }
+      }
+      
+    }
   }
   
   //MARK: - Animate Action Request Ride

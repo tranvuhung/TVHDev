@@ -11,7 +11,7 @@ import MapKit
 
 class SetupViewConstraints {
   static let sharedInstance = SetupViewConstraints()
-  
+
   //MARK: - Setup MapView
   let mapView: MKMapView = {
     let mapView = MKMapView()
@@ -26,14 +26,14 @@ class SetupViewConstraints {
     menuView.translatesAutoresizingMaskIntoConstraints = false
     return menuView
   }()
-  
+
   var menuSliderBtn: UIButton = {
     let menuBtn = UIButton()
     menuBtn.setImage(#imageLiteral(resourceName: "menuSliderBtn"), for: UIControlState.normal)
     menuBtn.translatesAutoresizingMaskIntoConstraints = false
     return menuBtn
   }()
-  
+
   let menuTitle: UILabel = {
     let title = UILabel()
     title.text = "TVHDev"
@@ -43,7 +43,7 @@ class SetupViewConstraints {
     title.translatesAutoresizingMaskIntoConstraints = false
     return title
   }()
-  
+
   let profilePhoto: UIImageView = {
     let pro = UIImageView()
     pro.image = UIImage(named: "noProfilePhoto")
@@ -53,7 +53,7 @@ class SetupViewConstraints {
     pro.translatesAutoresizingMaskIntoConstraints = false
     return pro
   }()
-  
+
   //MARK: setup bottomView
   let requestRide:  UIButton = {
     var request = UIButton()
@@ -62,23 +62,23 @@ class SetupViewConstraints {
     request.backgroundColor = UIColor(red: 255/255, green: 128/255, blue: 0, alpha: 1)
     request.setTitleColor(UIColor.black, for: .normal)
     request.translatesAutoresizingMaskIntoConstraints = false
-    
+
     request.layer.cornerRadius = 5.0
     request.layer.shadowColor = UIColor.darkGray.cgColor
     request.layer.shadowOpacity = 0.3
     request.layer.shadowRadius = 10.0
     request.layer.shadowOffset = CGSize.zero
-    
+
     return request
   }()
-  
+
   let centerMapbtn: UIButton = {
     let centerBtn = UIButton()
     centerBtn.setImage(#imageLiteral(resourceName: "centerMapBtn"), for: .normal)
     centerBtn.translatesAutoresizingMaskIntoConstraints = false
     return centerBtn
   }()
-  
+
   //MARK: Setup pick location
   let pickView: UIView = {
     let pk = UIView()
@@ -91,7 +91,7 @@ class SetupViewConstraints {
     pk.translatesAutoresizingMaskIntoConstraints = false
     return pk
   }()
-  
+
   let mylocationTextField: UITextField = {
     let mylocation = UITextField()
     mylocation.text = "My Location"
@@ -101,7 +101,7 @@ class SetupViewConstraints {
     mylocation.translatesAutoresizingMaskIntoConstraints = false
     return mylocation
   }()
-  
+
   let goingTextField: UITextField = {
     let going = UITextField()
     going.placeholder = "Where are you going?"
@@ -111,14 +111,14 @@ class SetupViewConstraints {
     going.translatesAutoresizingMaskIntoConstraints = false
     return going
   }()
-  
+
   let lineView: UIView = {
     let lineView = UIView()
     lineView.backgroundColor = UIColor.darkGray
     lineView.translatesAutoresizingMaskIntoConstraints = false
     return lineView
   }()
-  
+
   let locationView: UIView = {
     let locationView = UIView()
     locationView.backgroundColor = UIColor.green
@@ -128,7 +128,7 @@ class SetupViewConstraints {
     locationView.translatesAutoresizingMaskIntoConstraints = false
     return locationView
   }()
-  
+
   let goingView: UIView = {
     let goingView = UIView()
     goingView.backgroundColor = UIColor.gray
@@ -138,7 +138,7 @@ class SetupViewConstraints {
     goingView.translatesAutoresizingMaskIntoConstraints = false
     return goingView
   }()
-  
+
   //MARK: - Constraint setup view
   func setupView(){
     mapView.addSubview(menuView)
@@ -148,21 +148,21 @@ class SetupViewConstraints {
       menuView.trailingAnchor.constraint(equalTo: mapView.trailingAnchor, constant: 0),
       menuView.heightAnchor.constraint(equalToConstant: 64)
       ])
-    
+
     //MARK: Constraint MenuView
     menuView.addSubview(menuTitle)
     NSLayoutConstraint.activate([
       menuTitle.centerXAnchor.constraint(equalTo: menuView.centerXAnchor),
       menuTitle.centerYAnchor.constraint(equalTo: menuView.centerYAnchor)
       ])
-    
+
     menuView.addSubview(menuSliderBtn)
     NSLayoutConstraint.activate([
       menuSliderBtn.leadingAnchor.constraint(equalTo: menuView.leadingAnchor, constant: 10),
       menuSliderBtn.bottomAnchor.constraint(equalTo: menuView.bottomAnchor, constant: -10),
       menuSliderBtn.heightAnchor.constraint(equalToConstant: 40)
       ])
-    
+
     menuView.addSubview(profilePhoto)
     NSLayoutConstraint.activate([
       profilePhoto.trailingAnchor.constraint(equalTo: menuView.trailingAnchor, constant: -10),
@@ -170,33 +170,45 @@ class SetupViewConstraints {
       profilePhoto.heightAnchor.constraint(equalToConstant: 40),
       profilePhoto.widthAnchor.constraint(equalToConstant: 40)
       ])
-    
+
     //MARK: Constraint Bottom
     mapView.addSubview(requestRide)
-    NSLayoutConstraint.activate([
-      requestRide.leadingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-      requestRide.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-      requestRide.bottomAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-      requestRide.heightAnchor.constraint(equalToConstant: 60)
-      ])
+    if #available(iOS 11.0, *) {
+      NSLayoutConstraint.activate([
+        requestRide.leadingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+        requestRide.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+        requestRide.bottomAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+        requestRide.heightAnchor.constraint(equalToConstant: 60)
+        ])
+    } else {
+      // Fallback on earlier versions
+    }
     mapView.addSubview(centerMapbtn)
-    NSLayoutConstraint.activate([
-      centerMapbtn.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-      centerMapbtn.bottomAnchor.constraint(equalTo: requestRide.topAnchor, constant: -8),
-      centerMapbtn.heightAnchor.constraint(equalToConstant: 40),
-      centerMapbtn.widthAnchor.constraint(equalToConstant: 40)
-      ])
-    
+    if #available(iOS 11.0, *) {
+      NSLayoutConstraint.activate([
+        centerMapbtn.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+        centerMapbtn.bottomAnchor.constraint(equalTo: requestRide.topAnchor, constant: -8),
+        centerMapbtn.heightAnchor.constraint(equalToConstant: 40),
+        centerMapbtn.widthAnchor.constraint(equalToConstant: 40)
+        ])
+    } else {
+      // Fallback on earlier versions
+    }
+
     //MARK: Constraint pick location view
     mapView.addSubview(pickView)
-    NSLayoutConstraint.activate([
-      pickView.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 60),
-      pickView.leadingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-      pickView.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-      pickView.heightAnchor.constraint(equalToConstant: 80)
-      ])
+    if #available(iOS 11.0, *) {
+      NSLayoutConstraint.activate([
+        pickView.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 60),
+        pickView.leadingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+        pickView.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+        pickView.heightAnchor.constraint(equalToConstant: 80)
+        ])
+    } else {
+      // Fallback on earlier versions
+    }
   }
-  
+
   func constraintPickRide(){
     pickView.addSubview(mylocationTextField)
     pickView.addSubview(lineView)
@@ -208,22 +220,22 @@ class SetupViewConstraints {
       mylocationTextField.trailingAnchor.constraint(equalTo: pickView.trailingAnchor, constant: -10),
       mylocationTextField.heightAnchor.constraint(equalToConstant: 20),
       mylocationTextField.widthAnchor.constraint(equalToConstant: 300),
-      
+
       lineView.topAnchor.constraint(equalTo: mylocationTextField.bottomAnchor, constant: 5),
       lineView.trailingAnchor.constraint(equalTo: pickView.trailingAnchor, constant: -15),
       lineView.heightAnchor.constraint(equalToConstant: 1),
       lineView.widthAnchor.constraint(equalToConstant: 290),
-      
+
       goingTextField.topAnchor.constraint(equalTo: lineView.topAnchor, constant: 5),
       goingTextField.trailingAnchor.constraint(equalTo: pickView.trailingAnchor, constant: -10),
       goingTextField.heightAnchor.constraint(equalToConstant: 20),
       goingTextField.widthAnchor.constraint(equalToConstant: 300),
-      
+
       locationView.heightAnchor.constraint(equalToConstant: 15),
       locationView.widthAnchor.constraint(equalToConstant: 15),
       locationView.lastBaselineAnchor.constraint(equalTo: mylocationTextField.lastBaselineAnchor, constant: 10),
       locationView.leadingAnchor.constraint(equalTo: pickView.leadingAnchor, constant: 15),
-      
+
       goingView.heightAnchor.constraint(equalToConstant: 15),
       goingView.widthAnchor.constraint(equalToConstant: 15),
       goingView.lastBaselineAnchor.constraint(equalTo: goingTextField.lastBaselineAnchor, constant: 10),
@@ -236,26 +248,26 @@ class SetupViewConstraints {
 extension UIView
 {
   func anchorToTop(top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil) {
-    
+
     anchorWithConstantsToTop(top: top, left: left, bottom: bottom, right: right, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0)
   }
-  
+
   func anchorWithConstantsToTop(top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil, topConstant: CGFloat = 0, leftConstant: CGFloat = 0, bottomConstant: CGFloat = 0, rightConstant: CGFloat = 0) {
-    
+
     translatesAutoresizingMaskIntoConstraints = false
-    
+
     if let top = top {
       topAnchor.constraint(equalTo: top, constant: topConstant).isActive = true
     }
-    
+
     if let bottom = bottom {
       bottomAnchor.constraint(equalTo: bottom, constant: -bottomConstant).isActive = true
     }
-    
+
     if let left = left {
       leftAnchor.constraint(equalTo: left, constant: leftConstant).isActive = true
     }
-    
+
     if let right = right {
       rightAnchor.constraint(equalTo: right, constant: -rightConstant).isActive = true
     }

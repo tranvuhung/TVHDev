@@ -24,9 +24,16 @@ class LeftMenuPanelViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
   }
   
   override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
     pickupModeSwitch.isOn = false
     pickupModeSwitch.isHidden = true
     pickupModeLabel.isHidden = true
@@ -47,6 +54,7 @@ class LeftMenuPanelViewController: UIViewController {
       userIamgeView.isHidden = false
       loginoutBtn.setTitle("Logout", for: .normal)
     }
+    
   }
   
   func observePassengersAndDrivers(){
@@ -74,33 +82,30 @@ class LeftMenuPanelViewController: UIViewController {
     })
   }
   
+  //MARK: - Switch toggle action
   @IBAction func switchWasToggle(_ sender: Any) {
+    appDelegate.MenuContainerVC.toggoleLeftPanel()
+    
     if pickupModeSwitch.isOn{
       pickupModeLabel.text = "PICKUP MODE ENABLED"
       DataService.instance.REF_DRIVERS.child(Auth.auth().currentUser!.uid).updateChildValues(["isPickupModeEnabled": true])
-      appDelegate.MenuContainerVC.toggoleLeftPanel()
     } else {
       pickupModeLabel.text = "PICKUP MODE DISABLED"
       DataService.instance.REF_DRIVERS.child(Auth.auth().currentUser!.uid).updateChildValues(["isPickupModeEnabled": false])
-      appDelegate.MenuContainerVC.toggoleLeftPanel()
     }
     
-    if let uid = currentUserId{
-      print("Qua ao =))")
-    }
-    else {
-      print("Deo co cai gi het.....")
-    }
   }
+
+  @IBAction func settingActions(_ sender: Any) {
+    print("Tell me about you?")
+  }
+  
+  //MARK: - Login, logout
   @IBAction func loginActionBtn(_ sender: Any) {
     if Auth.auth().currentUser == nil {
       let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
       let loginVc = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController
       present(loginVc!, animated: true, completion: nil)
-      appDelegate.MenuContainerVC.toggoleLeftPanel()
-//      if self.presentingViewController == nil {
-//        appDelegate.MenuContainerVC.toggoleLeftPanel()
-//      }
     } else {
       do{
         try Auth.auth().signOut()
@@ -110,11 +115,10 @@ class LeftMenuPanelViewController: UIViewController {
         pickupModeLabel.text = ""
         pickupModeSwitch.isHidden = true
         loginoutBtn.setTitle("Sign up/ Login", for: .normal)
-        appDelegate.MenuContainerVC.toggoleLeftPanel()
       } catch let error {
         print(error.localizedDescription)
       }
     }
-    
+    appDelegate.MenuContainerVC.toggoleLeftPanel()
   }
 }
