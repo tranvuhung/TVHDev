@@ -28,6 +28,8 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
   var regionRadius: CLLocationDistance = 1000
   
   let revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "appicon")!, iconInitialSize: CGSize(width: 80, height: 80), backgroundColor: UIColor.white)
+  
+  var matchingItems: [MKMapItem] = [MKMapItem]()
 
   //MARK: - Life cycle
   override func viewDidLoad() {
@@ -151,6 +153,27 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
     }
     return nil
   }
+  
+  func performSearch(){
+    matchingItems.removeAll()
+    let request = MKLocalSearchRequest()
+    request.naturalLanguageQuery = destinationTexfield.text
+    request.region = mapView.region
+    
+    let search = MKLocalSearch(request: request)
+    search.start { (response, error) in
+      if error != nil{
+        print(error.debugDescription)
+      } else if response?.mapItems.count == 0 {
+        print("No results!")
+      } else {
+        for mapItems in response!.mapItems{
+          self.matchingItems.append(mapItems)
+          self.tableView.reloadData()
+        }
+      }
+    }
+  }
 }
 
 extension HomeViewController: CLLocationManagerDelegate{
@@ -200,13 +223,16 @@ extension HomeViewController: UITextFieldDelegate {
   }
   
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
+    matchingItems = []
+    self.tableView.reloadData()
+    
     centerMapUserLocation()
     return true
   }
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     if textField == destinationTexfield {
-      //performSearch()
+      performSearch()
       view.endEditing(true)
     }
     return true
@@ -238,11 +264,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 5
+    return matchingItems.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    return UITableViewCell()
+    let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "locationCell")
+    let mapItem = matchingItems[indexPath.row]
+    cell.textLabel?.text = mapItem.name
+    cell.detailTextLabel?.text = mapItem.placemark.title
+    return cell
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
