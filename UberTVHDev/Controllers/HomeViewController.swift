@@ -17,6 +17,10 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
   @IBOutlet weak var requestRideBtn: RoundedButton!
   @IBOutlet weak var mapView: MKMapView!
   @IBOutlet weak var centerMapBtn: UIButton!
+  @IBOutlet weak var destinationTexfield: UITextField!
+  @IBOutlet weak var destinationCircleView: CircleView!
+  
+  let tableView = UITableView()
   
   var delegate: CenterVCDelegate?
   
@@ -37,6 +41,7 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
     checkLocationAuthStatus()
     
     mapView.delegate = self
+    destinationTexfield.delegate = self
     
     centerMapUserLocation()
     
@@ -158,5 +163,90 @@ extension HomeViewController: CLLocationManagerDelegate{
   
   func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
     centerMapBtn.fadeTo(alpha: 1.0, withDuration: 0.2)
+  }
+}
+
+extension HomeViewController: UITextFieldDelegate {
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    if textField == destinationTexfield {
+      tableView.register(UITableViewCell.self, forCellReuseIdentifier: "locationCell")
+      tableView.frame = CGRect(x: 20, y: self.view.frame.height, width: self.view.frame.width - 40, height: 200)
+      tableView.rowHeight = 60
+      tableView.layer.cornerRadius = 5.0
+      tableView.tag = 18
+      
+      tableView.delegate = self
+      tableView.dataSource = self
+      
+      view.addSubview(tableView)
+      animateTableView(shouldShow: true)
+      
+      UIView.animate(withDuration: 0.2) {
+        self.destinationCircleView.backgroundColor = UIColor.red
+        self.destinationCircleView.borderColor = UIColor.init(red: 199/255, green: 0/255, blue: 0/255, alpha: 1.0)
+      }
+    }
+  }
+  
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    if textField == destinationTexfield{
+      if destinationTexfield.text == "" {
+        UIView.animate(withDuration: 0.2) {
+          self.destinationCircleView.backgroundColor = UIColor.lightGray
+          self.destinationCircleView.borderColor = UIColor.darkGray
+        }
+      }
+    }
+  }
+  
+  func textFieldShouldClear(_ textField: UITextField) -> Bool {
+    centerMapUserLocation()
+    return true
+  }
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    if textField == destinationTexfield {
+      //performSearch()
+      view.endEditing(true)
+    }
+    return true
+  }
+  
+  func animateTableView(shouldShow: Bool){
+    if shouldShow{
+      UIView.animate(withDuration: 0.2) {
+        self.tableView.frame = CGRect(x: 20, y: 185, width: self.view.frame.width - 40, height: self.view.frame.height - 200)
+      }
+    }else {
+      UIView.animate(withDuration: 0.2, animations: {
+        self.tableView.frame = CGRect(x: 20, y: self.view.frame.height, width: self.view.frame.width - 40, height: 200)
+      }) { (finished) in
+        for subview in self.view.subviews{
+          if subview.tag == 18{
+            subview.removeFromSuperview()
+          }
+        }
+      }
+    }
+  }
+  
+}
+
+extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return 1
+  }
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 5
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    return UITableViewCell()
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    animateTableView(shouldShow: false)
+    print("Selected!")
   }
 }

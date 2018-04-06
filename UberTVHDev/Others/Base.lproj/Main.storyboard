@@ -187,6 +187,8 @@
                     </view>
                     <connections>
                         <outlet property="centerMapBtn" destination="90L-bB-KP4" id="eVN-JL-2zx"/>
+                        <outlet property="destinationCircleView" destination="BkI-6W-Hlg" id="IsO-jY-PDh"/>
+                        <outlet property="destinationTexfield" destination="aCI-Ge-usp" id="0Xg-RG-QHj"/>
                         <outlet property="mapView" destination="nqb-GX-izE" id="fvV-ea-RFP"/>
                         <outlet property="requestRideBtn" destination="K65-AI-WkP" id="QOO-6l-Nb7"/>
                     </connections>
