@@ -32,6 +32,8 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
   var matchingItems: [MKMapItem] = [MKMapItem]()
   
   let currentUserId = Auth.auth().currentUser?.uid
+  
+  var selectedItemPlacemark: MKPlacemark? = nil
 
   //MARK: - Life cycle
   override func viewDidLoad() {
@@ -159,6 +161,16 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
       view = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
       view.image = UIImage(named: "currentLocationAnnotation")
       return view
+    }else if let anno = annotation as? MKPointAnnotation{
+      let identifier = "destination"
+      var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+      if annotationView  == nil {
+        annotationView = MKAnnotationView(annotation: anno, reuseIdentifier: identifier)
+      }else {
+        annotationView?.annotation = anno
+      }
+      annotationView?.image = UIImage(named: "destinationAnnotation")
+      return annotationView
     }
     return nil
   }
@@ -183,6 +195,20 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
         }
       }
     }
+  }
+  
+  //MARK: - Drop pin location
+  func dropPinFor(placemark: MKPlacemark){
+    selectedItemPlacemark = placemark
+    
+    for annotation in mapView.annotations{
+      if annotation.isKind(of: MKPointAnnotation.self){
+        mapView.removeAnnotation(annotation)
+      }
+    }
+    let annotation = MKPointAnnotation()
+    annotation.coordinate = placemark.coordinate
+    mapView.addAnnotation(annotation)
   }
 }
 
@@ -298,6 +324,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     let selectMapItem = matchingItems[indexPath.row]
     DataService.instance.REF_USERS.child(Auth.auth().currentUser!.uid).updateChildValues(["tripCoordinate": [selectMapItem.placemark.coordinate.latitude, selectMapItem.placemark.coordinate.longitude]])
+    
+    dropPinFor(placemark: selectMapItem.placemark)
     
     animateTableView(shouldShow: false)
     print("Selected!")
