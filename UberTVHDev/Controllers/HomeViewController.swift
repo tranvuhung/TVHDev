@@ -30,6 +30,8 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
   let revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "appicon")!, iconInitialSize: CGSize(width: 80, height: 80), backgroundColor: UIColor.white)
   
   var matchingItems: [MKMapItem] = [MKMapItem]()
+  
+  let currentUserId = Auth.auth().currentUser?.uid
 
   //MARK: - Life cycle
   override func viewDidLoad() {
@@ -144,11 +146,18 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
   }
   
   func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+    
     if let annotation = annotation as? DriverAnnotation{
       let identifer = "driver"
       var view: MKAnnotationView
       view = MKAnnotationView(annotation: annotation, reuseIdentifier: identifer)
       view.image = UIImage(named: "driverAnnotation")
+      return view
+    } else if let annotation = annotation as? PassengerAnnotation{
+      let identifier = "passenger"
+      var view: MKAnnotationView
+      view = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+      view.image = UIImage(named: "currentLocationAnnotation")
       return view
     }
     return nil
@@ -280,6 +289,16 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+    let coordinate = locationManager?.location?.coordinate
+    let passengerAnnotation = PassengerAnnotation(coordinate: coordinate!, key: Auth.auth().currentUser!.uid)
+    mapView.addAnnotation(passengerAnnotation)
+    
+    destinationTexfield.text = tableView.cellForRow(at: indexPath)?.textLabel?.text
+    
+    let selectMapItem = matchingItems[indexPath.row]
+    DataService.instance.REF_USERS.child(Auth.auth().currentUser!.uid).updateChildValues(["tripCoordinate": [selectMapItem.placemark.coordinate.latitude, selectMapItem.placemark.coordinate.longitude]])
+    
     animateTableView(shouldShow: false)
     print("Selected!")
   }
