@@ -12,7 +12,7 @@ import CoreLocation
 import Firebase
 import RevealingSplashView
 
-class HomeViewController: UIViewController, MKMapViewDelegate {
+class HomeViewController: UIViewController, MKMapViewDelegate, Alertable {
   
   @IBOutlet weak var requestRideBtn: RoundedButton!
   @IBOutlet weak var mapView: MKMapView!
@@ -201,9 +201,10 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
     let search = MKLocalSearch(request: request)
     search.start { (response, error) in
       if error != nil{
+        self.showAlert("An unexpected error occurred. Please try again.")
         print(error.debugDescription)
       } else if response?.mapItems.count == 0 {
-        print("No results!")
+        self.showAlert("No results! Please search again for a different location.")
       } else {
         for mapItems in response!.mapItems{
           self.matchingItems.append(mapItems)
@@ -238,6 +239,7 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
     let direction = MKDirections(request: requset)
     direction.calculate { (response, error) in
       guard let response = response else {
+        self.showAlert("An unexpected error occurred. Please try again.")
         print(error.debugDescription)
         return
       }
