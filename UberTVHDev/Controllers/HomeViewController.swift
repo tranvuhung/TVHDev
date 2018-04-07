@@ -194,6 +194,7 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
         for mapItems in response!.mapItems{
           self.matchingItems.append(mapItems)
           self.tableView.reloadData()
+          self.shouldPresentLoadingView(status: false)
         }
       }
     }
@@ -228,6 +229,7 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
       }
       self.router = response.routes[0]
       self.mapView.add(self.router.polyline)
+      self.shouldPresentLoadingView(status: false)
     }
     
   }
@@ -299,6 +301,7 @@ extension HomeViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     if textField == destinationTexfield {
       performSearch()
+      shouldPresentLoadingView(status: true)
       view.endEditing(true)
     }
     return true
@@ -343,6 +346,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+    shouldPresentLoadingView(status: true)
     
     let coordinate = locationManager?.location?.coordinate
     let passengerAnnotation = PassengerAnnotation(coordinate: coordinate!, key: Auth.auth().currentUser!.uid)
