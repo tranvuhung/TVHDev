@@ -34,6 +34,8 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
   let currentUserId = Auth.auth().currentUser?.uid
   
   var selectedItemPlacemark: MKPlacemark? = nil
+  
+  var router: MKRoute!
 
   //MARK: - Life cycle
   override func viewDidLoad() {
@@ -210,6 +212,32 @@ class HomeViewController: UIViewController, MKMapViewDelegate {
     annotation.coordinate = placemark.coordinate
     mapView.addAnnotation(annotation)
   }
+  
+  //MARK: Render polyline
+  func searchResultsWithPolyline(forMapItems mapItem: MKMapItem){
+    let requset = MKDirectionsRequest()
+    requset.source = MKMapItem.forCurrentLocation()
+    requset.destination = mapItem
+    requset.transportType = MKDirectionsTransportType.automobile
+    
+    let direction = MKDirections(request: requset)
+    direction.calculate { (response, error) in
+      guard let response = response else {
+        print(error.debugDescription)
+        return
+      }
+      self.router = response.routes[0]
+      self.mapView.add(self.router.polyline)
+    }
+    
+  }
+  
+  func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+    let lineRenderer = MKPolylineRenderer(overlay: self.router.polyline)
+    lineRenderer.strokeColor = UIColor(red: 216/255, green: 71/255, blue: 30/255, alpha: 0.75)
+    lineRenderer.lineWidth = 3
+    return lineRenderer
+  }
 }
 
 //MARK: Location manager delegate
@@ -326,6 +354,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     DataService.instance.REF_USERS.child(Auth.auth().currentUser!.uid).updateChildValues(["tripCoordinate": [selectMapItem.placemark.coordinate.latitude, selectMapItem.placemark.coordinate.longitude]])
     
     dropPinFor(placemark: selectMapItem.placemark)
+    
+    searchResultsWithPolyline(forMapItems: selectMapItem)
     
     animateTableView(shouldShow: false)
     print("Selected!")
