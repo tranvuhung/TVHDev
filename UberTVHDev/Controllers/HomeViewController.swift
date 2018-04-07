@@ -294,6 +294,18 @@ extension HomeViewController: UITextFieldDelegate {
     matchingItems = []
     self.tableView.reloadData()
     
+    DataService.instance.REF_USERS.child(Auth.auth().currentUser!.uid).child("tripCoordinate").removeValue()
+    
+    mapView.removeOverlays(mapView.overlays)
+    for annotation in mapView.annotations {
+      if annotation is MKPointAnnotation{
+        mapView.removeAnnotation(annotation)
+      } else if annotation.isKind(of: PassengerAnnotation.self){
+        mapView.removeAnnotation(annotation)
+      }
+    }
+    
+    
     centerMapUserLocation()
     return true
   }
