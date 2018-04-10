@@ -524,9 +524,9 @@
                                 </connections>
                             </button>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="BxY-Lc-i6k" customClass="RoundMapView" customModule="UberTVHDev" customModuleProvider="target">
-                                <rect key="frame" x="37.666666666666657" y="236.66666666666663" width="300" height="340"/>
+                                <rect key="frame" x="17.666666666666657" y="236.66666666666663" width="340" height="340"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="5Qv-Pt-w5q"/>
+                                    <constraint firstAttribute="width" constant="340" id="5Qv-Pt-w5q"/>
                                     <constraint firstAttribute="height" constant="340" id="uTo-1s-pIX"/>
                                 </constraints>
                             </mapView>
