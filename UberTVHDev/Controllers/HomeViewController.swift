@@ -62,6 +62,27 @@ class HomeViewController: UIViewController, MKMapViewDelegate, Alertable {
     revealingSplashView.startAnimation()
     revealingSplashView.heartAttack = true
     
+    UpdateServices.instance.observeTrips { (tripDict) in
+      if let tripDict = tripDict {
+        let pickupCoordinateArray = tripDict["pickupCoordinate"] as! NSArray
+        let tripkey = tripDict["passengerKey"] as! String
+        let acceptanceStatus = tripDict["tripIsAccepted"] as! Bool
+        
+        if acceptanceStatus == false {
+          DataService.instance.driverIsAvailable(key: Auth.auth().currentUser!.uid, handler: { (availbale) in
+            if let availbale = availbale {
+              if availbale == true {
+                let storyboad = UIStoryboard(name: "Main", bundle: Bundle.main)
+                let pickupVC = storyboad.instantiateViewController(withIdentifier: "pickupVC") as? PickupViewController
+                pickupVC?.initData(coordinate: CLLocationCoordinate2D(latitude: pickupCoordinateArray[0] as! CLLocationDegrees, longitude: pickupCoordinateArray[1] as! CLLocationDegrees), passengerKey: tripkey)
+                self.present(pickupVC!, animated: true, completion: nil)
+              }
+            }
+          })
+        }
+      }
+    }
+    
   }
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -129,7 +150,10 @@ class HomeViewController: UIViewController, MKMapViewDelegate, Alertable {
   
   //MARK: - Animate Action Request Ride
   @IBAction func requestRideAction(_ sender: Any) {
+    UpdateServices.instance.updateTripWithCoordinatesUponRequest()
     requestRideBtn.animateButton(shouldLoad: true, withMessage: nil)
+    self.view.endEditing(true)
+    destinationTexfield.isUserInteractionEnabled = false
   }
   
   //MARK: - Open Left side controller

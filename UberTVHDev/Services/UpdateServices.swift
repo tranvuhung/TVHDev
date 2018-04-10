@@ -41,4 +41,36 @@ class UpdateServices {
     }
   }
   
+  func observeTrips(handler: @escaping(_ coordinateDict: Dictionary<String, AnyObject>?) -> Void){
+    DataService.instance.REF_TRIPS.observe(.value) { (snapshot) in
+      if let tripSnapshot = snapshot.children.allObjects as? [DataSnapshot]{
+        for trip in tripSnapshot{
+          if trip.hasChild("passengerKey") && trip.hasChild("tripIsAccepted") {
+            if let tripDict = trip.value as? Dictionary<String, AnyObject>{
+              handler(tripDict)
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  func updateTripWithCoordinatesUponRequest(){
+    DataService.instance.REF_USERS.observeSingleEvent(of: .value) { (snapshot) in
+      if let userSnapshot = snapshot.children.allObjects as? [DataSnapshot]{
+        for user in userSnapshot {
+          if user.key == Auth.auth().currentUser?.uid{
+            if !user.hasChild("userIsDriver"){
+              guard let userDict = user.value as? Dictionary<String, AnyObject> else {return}
+              let pickUpArray = userDict["coordinate"] as! NSArray
+              let destionationArray = userDict["tripCoordinate"] as! NSArray
+              
+              DataService.instance.REF_TRIPS.child(user.key).updateChildValues(["pickupCoordinate": [pickUpArray[0], pickUpArray[1]], "destinationCoordinate": [destionationArray[0], destionationArray[1]], "passengerKey": user.key, "tripIsAccepted": false])
+            }
+          }
+        }
+      }
+    }
+  }
+  
 }

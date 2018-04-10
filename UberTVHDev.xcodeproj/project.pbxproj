@@ -18,6 +18,8 @@
 		621A9F78206DD4D500850AE5 /* SetupLeftSidePanelVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621A9F77206DD4D500850AE5 /* SetupLeftSidePanelVC.swift */; };
 		622CB9CA206CE4B5004E08A7 /* SetupViewConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622CB9C9206CE4B5004E08A7 /* SetupViewConstraints.swift */; };
 		622CB9EA206CFD8F004E08A7 /* RoundedShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622CB9E9206CFD8F004E08A7 /* RoundedShadowButton.swift */; };
+		6243D706207B742F0071DB7E /* PickupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6243D705207B742F0071DB7E /* PickupViewController.swift */; };
+		6243D708207B75E60071DB7E /* RoundMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6243D707207B75E60071DB7E /* RoundMapView.swift */; };
 		624FED0520775E6300D8576C /* PassengerAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624FED0420775E6300D8576C /* PassengerAnnotation.swift */; };
 		6256DC062072199200A534B0 /* RoundedConnerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6256DC052072199200A534B0 /* RoundedConnerImageView.swift */; };
 		6256DC0820721AAE00A534B0 /* BorderMylocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6256DC0720721AAE00A534B0 /* BorderMylocationView.swift */; };
@@ -55,6 +57,8 @@
 		621A9F7B206DD8AE00850AE5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		622CB9C9206CE4B5004E08A7 /* SetupViewConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewConstraints.swift; sourceTree = "<group>"; };
 		622CB9E9206CFD8F004E08A7 /* RoundedShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedShadowButton.swift; sourceTree = "<group>"; };
+		6243D705207B742F0071DB7E /* PickupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupViewController.swift; sourceTree = "<group>"; };
+		6243D707207B75E60071DB7E /* RoundMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundMapView.swift; sourceTree = "<group>"; };
 		624FED0420775E6300D8576C /* PassengerAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassengerAnnotation.swift; sourceTree = "<group>"; };
 		6256DC052072199200A534B0 /* RoundedConnerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedConnerImageView.swift; sourceTree = "<group>"; };
 		6256DC0720721AAE00A534B0 /* BorderMylocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderMylocationView.swift; sourceTree = "<group>"; };
@@ -182,6 +186,7 @@
 		62686480206C721E00C0EC66 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				6243D705207B742F0071DB7E /* PickupViewController.swift */,
 				6210A80D206D47A2001A08D6 /* HomeViewController.swift */,
 				6210A811206D4983001A08D6 /* ContainerVC.swift */,
 				628A074E206E7945002311F0 /* LeftMenuPanelViewController.swift */,
@@ -193,6 +198,7 @@
 		62686481206C723000C0EC66 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				6243D707207B75E60071DB7E /* RoundMapView.swift */,
 				624FED0420775E6300D8576C /* PassengerAnnotation.swift */,
 				62E5152D2074CC6C00617AEB /* DriverAnnotation.swift */,
 				62686483206C733A00C0EC66 /* GradientView.swift */,
@@ -362,6 +368,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6243D708207B75E60071DB7E /* RoundMapView.swift in Sources */,
 				621A9F78206DD4D500850AE5 /* SetupLeftSidePanelVC.swift in Sources */,
 				6256DC0A20721B2700A534B0 /* BorderGoingLocationView.swift in Sources */,
 				62E5152E2074CC6C00617AEB /* DriverAnnotation.swift in Sources */,
@@ -384,6 +391,7 @@
 				6210A815206D5117001A08D6 /* CenterVCDelegate.swift in Sources */,
 				624FED0520775E6300D8576C /* PassengerAnnotation.swift in Sources */,
 				6256DC0820721AAE00A534B0 /* BorderMylocationView.swift in Sources */,
+				6243D706207B742F0071DB7E /* PickupViewController.swift in Sources */,
 				6261F8B42071D585002CA510 /* LoginViewController.swift in Sources */,
 				62686484206C733A00C0EC66 /* GradientView.swift in Sources */,
 				62EEBE052078821A005C94A3 /* Alertable.swift in Sources */,
