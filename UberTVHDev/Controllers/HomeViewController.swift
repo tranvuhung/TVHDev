@@ -22,7 +22,7 @@ class HomeViewController: UIViewController, MKMapViewDelegate, Alertable {
   
   let tableView = UITableView()
   
-  var delegate: CenterVCDelegate?
+  var delegateExpanded: CenterVCDelegate?
   
   var locationManager: CLLocationManager?
   var regionRadius: CLLocationDistance = 1000
@@ -83,6 +83,29 @@ class HomeViewController: UIViewController, MKMapViewDelegate, Alertable {
       }
     }
     
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    DataService.instance.driverIsAvailable(key: Auth.auth().currentUser!.uid) { (status) in
+      if status == false {
+        DataService.instance.REF_TRIPS.observeSingleEvent(of: .value, with: { (tripSnapshot) in
+          if let tripSnapshot = tripSnapshot.children.allObjects as? [DataSnapshot] {
+            for trip in tripSnapshot {
+              if trip.childSnapshot(forPath: "driverKey").value as? String == Auth.auth().currentUser!.uid {
+                let pickupCoordinateArray = trip.childSnapshot(forPath: "pickupCoordinate").value as! NSArray
+                let pickupCoordinate = CLLocationCoordinate2D(latitude: pickupCoordinateArray[0] as! CLLocationDegrees, longitude: pickupCoordinateArray[1] as! CLLocationDegrees)
+                let pickupPlacemark = MKPlacemark(coordinate: pickupCoordinate)
+                
+                self.dropPinFor(placemark: pickupPlacemark)
+                self.searchResultsWithPolyline(forMapItems: MKMapItem(placemark: pickupPlacemark))
+              }
+            }
+          }
+        })
+      }
+    }
   }
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -158,7 +181,7 @@ class HomeViewController: UIViewController, MKMapViewDelegate, Alertable {
   
   //MARK: - Open Left side controller
   @IBAction func openLeftMenuPress(_ sender: Any) {
-    delegate?.toggoleLeftPanel()
+    delegateExpanded?.toggoleLeftPanel()
   }
   
   //MARK: - Center user location
@@ -269,7 +292,9 @@ class HomeViewController: UIViewController, MKMapViewDelegate, Alertable {
       }
       self.router = response.routes[0]
       self.mapView.add(self.router.polyline)
-      self.shouldPresentLoadingView(status: false)
+      
+      let delegate = AppDelegate.getAppDelegate()
+      delegate.window?.rootViewController?.shouldPresentLoadingView(status: false)
     }
     
   }
@@ -278,6 +303,8 @@ class HomeViewController: UIViewController, MKMapViewDelegate, Alertable {
     let lineRenderer = MKPolylineRenderer(overlay: self.router.polyline)
     lineRenderer.strokeColor = UIColor(red: 216/255, green: 71/255, blue: 30/255, alpha: 0.75)
     lineRenderer.lineWidth = 3
+    
+    shouldPresentLoadingView(status: false)
     
     zoom(toFitAnnotationsFromMapView: self.mapView)
     

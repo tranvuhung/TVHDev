@@ -15,6 +15,8 @@ class LeftMenuPanelViewController: UIViewController {
   
   let appDelegate = AppDelegate.getAppDelegate()
   
+  var delegate: CenterVCDelegate?
+  
   @IBOutlet weak var pickupModeSwitch: UISwitch!
   @IBOutlet weak var pickupModeLabel: UILabel!
   @IBOutlet weak var userIamgeView: RoundedConnerImageView!
@@ -84,7 +86,8 @@ class LeftMenuPanelViewController: UIViewController {
   
   //MARK: - Switch toggle action
   @IBAction func switchWasToggle(_ sender: Any) {
-    appDelegate.MenuContainerVC.toggoleLeftPanel()
+    //appDelegate.MenuContainerVC.toggoleLeftPanel()
+    delegate?.toggoleLeftPanel()
     
     if pickupModeSwitch.isOn{
       pickupModeLabel.text = "PICKUP MODE ENABLED"
@@ -119,6 +122,7 @@ class LeftMenuPanelViewController: UIViewController {
         print(error.localizedDescription)
       }
     }
-    appDelegate.MenuContainerVC.toggoleLeftPanel()
+    //appDelegate.MenuContainerVC.toggoleLeftPanel()
+    delegate?.toggoleLeftPanel()
   }
 }

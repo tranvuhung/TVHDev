@@ -46,7 +46,7 @@ class ContainerVC: UIViewController {
     showVC = screen
     if homeVC == nil {
       homeVC = UIStoryboard.homeViewController()
-      homeVC.delegate = self
+      homeVC.delegateExpanded = self
     }
     
     presentingController = homeVC

@@ -32,6 +32,7 @@
 		6261F8B62071EB7F002CA510 /* RoundedConnerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6261F8B52071EB7F002CA510 /* RoundedConnerTextField.swift */; };
 		62686484206C733A00C0EC66 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62686483206C733A00C0EC66 /* GradientView.swift */; };
 		628A074F206E7945002311F0 /* LeftMenuPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628A074E206E7945002311F0 /* LeftMenuPanelViewController.swift */; };
+		629CE2762080637C00B163DF /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629CE2752080637C00B163DF /* MainViewController.swift */; };
 		62DE108B2072786F000885A5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62DE108A2072786F000885A5 /* GoogleService-Info.plist */; };
 		62DE108E20727D0C000885A5 /* DataServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DE108D20727D0C000885A5 /* DataServices.swift */; };
 		62E5152E2074CC6C00617AEB /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E5152D2074CC6C00617AEB /* DriverAnnotation.swift */; };
@@ -71,6 +72,7 @@
 		6261F8B52071EB7F002CA510 /* RoundedConnerTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedConnerTextField.swift; sourceTree = "<group>"; };
 		62686483206C733A00C0EC66 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		628A074E206E7945002311F0 /* LeftMenuPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftMenuPanelViewController.swift; sourceTree = "<group>"; };
+		629CE2752080637C00B163DF /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		62DE108A2072786F000885A5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		62DE108D20727D0C000885A5 /* DataServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServices.swift; sourceTree = "<group>"; };
 		62E5152D2074CC6C00617AEB /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 		62686480206C721E00C0EC66 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				629CE2752080637C00B163DF /* MainViewController.swift */,
 				6243D705207B742F0071DB7E /* PickupViewController.swift */,
 				6210A80D206D47A2001A08D6 /* HomeViewController.swift */,
 				6210A811206D4983001A08D6 /* ContainerVC.swift */,
@@ -375,6 +378,7 @@
 				6256DC0E20721FFE00A534B0 /* CircleView.swift in Sources */,
 				6256DC062072199200A534B0 /* RoundedConnerImageView.swift in Sources */,
 				6210A80E206D47A2001A08D6 /* HomeViewController.swift in Sources */,
+				629CE2762080637C00B163DF /* MainViewController.swift in Sources */,
 				6210A812206D4983001A08D6 /* ContainerVC.swift in Sources */,
 				628A074F206E7945002311F0 /* LeftMenuPanelViewController.swift in Sources */,
 				622CB9EA206CFD8F004E08A7 /* RoundedShadowButton.swift in Sources */,
