@@ -19,6 +19,7 @@ class HomeViewController: UIViewController, MKMapViewDelegate, Alertable {
   @IBOutlet weak var centerMapBtn: UIButton!
   @IBOutlet weak var destinationTexfield: UITextField!
   @IBOutlet weak var destinationCircleView: CircleView!
+  @IBOutlet weak var btnCancel: UIButton!
   
   let tableView = UITableView()
   
@@ -105,6 +106,29 @@ class HomeViewController: UIViewController, MKMapViewDelegate, Alertable {
           }
         })
       }
+    }
+    
+    DataService.instance.REF_TRIPS.observe(.childRemoved) { (removedTripSnapshot) in
+      let removedTrip = removedTripSnapshot.value as? [String: AnyObject]
+      if removedTrip?["driverKey"] != nil {
+        DataService.instance.REF_DRIVERS.child(removedTrip?["driverKey"] as! String).updateChildValues(["driverIsOnTrip": false])
+      }
+      
+      DataService.instance.userIsDriver(userKey: Auth.auth().currentUser!.uid, handler: { (isDriver) in
+        if isDriver == true {
+          //remove overlay and annotation
+        } else {
+          self.btnCancel.fadeTo(alpha: 0.0, withDuration: 0.2)
+          self.requestRideBtn.animateButton(shouldLoad: false, withMessage: "REQUSET RIDE")
+          
+          self.destinationTexfield.isUserInteractionEnabled = true
+          self.destinationTexfield.text = ""
+          
+          //remove all map annotaions and overlays
+          self.centerMapUserLocation()
+        }
+      })
+      
     }
   }
   
@@ -202,6 +226,22 @@ class HomeViewController: UIViewController, MKMapViewDelegate, Alertable {
       }
     }
     
+  }
+  
+  @IBAction func cancelBtnWasPressed(_ sender: Any) {
+    DataService.instance.driverIsOnTrip(driverKey: Auth.auth().currentUser!.uid) { (isOnTrip, driverKey, tripKey) in
+      if isOnTrip == true {
+        UpdateServices.instance.cancelTrip(withPassenger: tripKey!, forDriver: driverKey!)
+      }
+    }
+    
+    DataService.instance.passengerIsOnTrip(passengerKey: Auth.auth().currentUser!.uid) { (isOnTrip, driveKey, tripKey) in
+      if isOnTrip == true {
+        UpdateServices.instance.cancelTrip(withPassenger: Auth.auth().currentUser!.uid, forDriver: driveKey!)
+      } else {
+        UpdateServices.instance.cancelTrip(withPassenger: Auth.auth().currentUser!.uid, forDriver: nil)
+      }
+    }
   }
   
   //MARK: Update location user/driver
